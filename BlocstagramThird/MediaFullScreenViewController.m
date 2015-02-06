@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
 @property (nonatomic, strong) UITapGestureRecognizer *doubleTap;
+//@property (nonatomic, strong) UIButton *shareButton;
 
 @end
 
@@ -32,9 +33,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-//    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(sharePressed:)];
-//    self.navigationItem.rightBarButtonItem = shareButton;
     
     self.scrollView = [UIScrollView new];
     self.scrollView.delegate = self;
@@ -57,6 +55,13 @@
     
     [self.scrollView addGestureRecognizer:self.tap];
     [self.scrollView addGestureRecognizer:self.doubleTap];
+    
+    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [shareButton addTarget:self action:@selector(<#selector#>) forControlEvents:UIControlEventTouchUpInside];
+    [shareButton setTitle:@"Share" forState:UIControlStateNormal];
+    
+    shareButton.frame = CGRectMake(10, 10, 10, 10);
+    [self.view addSubview:shareButton];
 }
 
 //- (IBAction)sharePressed:(id)sender {
