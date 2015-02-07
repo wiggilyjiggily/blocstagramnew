@@ -55,18 +55,27 @@
     
     [self.scrollView addGestureRecognizer:self.tap];
     [self.scrollView addGestureRecognizer:self.doubleTap];
+
+    UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, 320, 25)];
+    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(sharePressed)];
+    [self.view addSubview:navBar];
     
-    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [shareButton addTarget:self action:@selector(<#selector#>) forControlEvents:UIControlEventTouchUpInside];
-    [shareButton setTitle:@"Share" forState:UIControlStateNormal];
+    UINavigationItem *navItem = [[UINavigationItem alloc] init];
+    navItem.rightBarButtonItem = shareButton;
+    navBar.items = [NSArray arrayWithObjects:navItem, nil];
     
-    shareButton.frame = CGRectMake(10, 10, 10, 10);
-    [self.view addSubview:shareButton];
+// PS
+//    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [shareButton addTarget:self action:@selector(activityMethod) forControlEvents:UIControlEventTouchUpInside];
+//    [shareButton setTitle:@"Share" forState:UIControlStateNormal];
+//    
+//    shareButton.frame = CGRectMake(10, 10, 10, 10);
+//    [self.view addSubview:shareButton];
 }
 
-//- (IBAction)sharePressed:(id)sender {
-//
-//    [self.scrollView ]]
+// PS
+//- (void)activityMethod {
+//    [UITableViewController mediaItem:self.media withVC:self];
 //}
 
 - (void)viewWillLayoutSubviews {
@@ -147,6 +156,10 @@
     } else {
         [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
     }
+}
+
+- (void)sharePressed {
+    NSLog(@"Share button pressed.");
 }
 
 /*
