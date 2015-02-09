@@ -21,6 +21,8 @@
 @property (nonatomic, weak) UIView *lastSelectedCommentView;
 @property (nonatomic, assign) CGFloat lastKeyboardAdjustment;
 
+@property (nonatomic) BOOL isDecelerating;
+
 @end
 
 @implementation ImagesTableViewController
@@ -126,7 +128,8 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     Media *mediaItem = [DataSource sharedInstance].mediaItems[indexPath.row];
-    if (mediaItem.downloadState == MediaDownloadStateNeedsImage) {
+    NSLog(@"Content offset %f", self.tableView.contentOffset.y);
+    if (mediaItem.downloadState == MediaDownloadStateNeedsImage && (self.tableView.isDecelerating || self.tableView.contentOffset.y == -64)) {
         [[DataSource sharedInstance] downloadImageForMediaItem:mediaItem];
     }
 }
@@ -196,6 +199,7 @@
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
     // still figure this out...
+    NSLog(@"decelerating at %f", scrollView.decelerationRate);
 }
 
 #pragma mark - MediaTableViewCellDelegate
