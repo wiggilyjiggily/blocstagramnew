@@ -12,6 +12,7 @@
 #import "User.h"
 #import "LikeButton.h"
 #import "ComposeCommentView.h"
+#import "DataSource.h"
 
 @interface MediaTableViewCell () <UIGestureRecognizerDelegate, ComposeCommentViewDelegate>
 
@@ -25,6 +26,7 @@
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
+@property (nonatomic, strong) UITapGestureRecognizer *doubleFingerTapGestureRecognizer;
 
 @property (nonatomic, strong) LikeButton *likeButton;
 @property (nonatomic, strong) ComposeCommentView *commentView;
@@ -82,6 +84,14 @@ static NSParagraphStyle *paragraphStyle;
         
         self.commentView = [[ComposeCommentView alloc] init];
         self.commentView.delegate = self;
+        
+        self.doubleFingerTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleFingerTapFired:)];
+        self.doubleFingerTapGestureRecognizer.delegate = self;
+        self.doubleFingerTapGestureRecognizer.numberOfTouchesRequired = 2;
+        [self.mediaImageView addGestureRecognizer:self.doubleFingerTapGestureRecognizer];
+        
+//      OR...
+//      [self addGestureRecognizer:self.doubleFingerTapGestureRecognizer];
         
         for (UIView *view in @[self.mediaImageView, self.usernameAndCaptionLabel, self.commentLabel, self.likeButton, self.commentView]) {
             [self.contentView addSubview:view];
@@ -159,7 +169,7 @@ static NSParagraphStyle *paragraphStyle;
     if (_mediaItem.image) {
         self.imageHeightConstraint.constant = self.mediaItem.image.size.height / self.mediaItem.image.size.width * CGRectGetWidth(self.contentView.bounds);
     } else {
-        self.imageHeightConstraint.constant = 0;
+        self.imageHeightConstraint.constant = 100;
     }
     
     // Hide the line between cells
@@ -247,6 +257,10 @@ static NSParagraphStyle *paragraphStyle;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     return self.isEditing == NO;
+}
+
+- (void)doubleFingerTapFired:(UITapGestureRecognizer *)sender {
+    [[DataSource sharedInstance] downloadImageForMediaItem:self.mediaImageView];
 }
 
 #pragma mark - ComposeCommentViewDelegate
