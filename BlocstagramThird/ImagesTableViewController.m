@@ -129,6 +129,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     Media *mediaItem = [DataSource sharedInstance].mediaItems[indexPath.row];
     NSLog(@"Content offset %f", self.tableView.contentOffset.y);
+    // add comment on why you put "-64"
     if (mediaItem.downloadState == MediaDownloadStateNeedsImage && (self.tableView.isDecelerating || self.tableView.contentOffset.y == -64)) {
         [[DataSource sharedInstance] downloadImageForMediaItem:mediaItem];
     }

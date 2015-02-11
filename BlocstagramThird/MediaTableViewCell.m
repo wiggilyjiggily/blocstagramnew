@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UIImageView *mediaImageView;
 @property (nonatomic, strong) UILabel *usernameAndCaptionLabel;
 @property (nonatomic, strong) UILabel *commentLabel;
+@property (nonatomic, strong) UILabel *numberOfLikesLabel;
 
 @property (nonatomic, strong) NSLayoutConstraint *imageHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *usernameAndCaptionLabelHeightConstraint;
@@ -89,9 +90,6 @@ static NSParagraphStyle *paragraphStyle;
         self.doubleFingerTapGestureRecognizer.delegate = self;
         self.doubleFingerTapGestureRecognizer.numberOfTouchesRequired = 2;
         [self.mediaImageView addGestureRecognizer:self.doubleFingerTapGestureRecognizer];
-        
-//      OR...
-//      [self addGestureRecognizer:self.doubleFingerTapGestureRecognizer];
         
         for (UIView *view in @[self.mediaImageView, self.usernameAndCaptionLabel, self.commentLabel, self.likeButton, self.commentView]) {
             [self.contentView addSubview:view];
@@ -204,6 +202,7 @@ static NSParagraphStyle *paragraphStyle;
     self.commentLabel.attributedText = [self commentString];
     self.likeButton.likeButtonState = mediaItem.likeState;
     self.commentView.text = mediaItem.temporaryComment;
+    self.numberOfLikesLabel.attributedText = [self numberOfLikesLabel];
 }
 
 + (CGFloat)heightForMediaItem:(Media *)mediaItem width:(CGFloat)width {
