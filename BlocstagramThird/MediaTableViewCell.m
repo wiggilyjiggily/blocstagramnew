@@ -93,6 +93,8 @@ static NSParagraphStyle *paragraphStyle;
         [self.mediaImageView addGestureRecognizer:self.doubleFingerTapGestureRecognizer];
         
         self.numberOfLikesLabel = [[UILabel alloc] init];
+        self.numberOfLikesLabel.minimumScaleFactor = 0.5;
+        self.numberOfLikesLabel.adjustsFontSizeToFitWidth = YES;
         
         for (UIView *view in @[self.mediaImageView, self.usernameAndCaptionLabel, self.commentLabel, self.likeButton, self.commentView, self.numberOfLikesLabel]) {
             [self.contentView addSubview:view];
@@ -102,10 +104,9 @@ static NSParagraphStyle *paragraphStyle;
         NSDictionary *viewDictionary = NSDictionaryOfVariableBindings(_mediaImageView, _usernameAndCaptionLabel, _commentLabel, _likeButton, _commentView, _numberOfLikesLabel);
         
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_mediaImageView]|" options:kNilOptions metrics:nil views:viewDictionary]];
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_usernameAndCaptionLabel][_likeButton(==38)]|" options:NSLayoutFormatAlignAllTop | NSLayoutFormatAlignAllBottom metrics:nil views:viewDictionary]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_usernameAndCaptionLabel]-[_numberOfLikesLabel(==38)]-[_likeButton(==38)]|" options:NSLayoutFormatAlignAllTop | NSLayoutFormatAlignAllBottom metrics:nil views:viewDictionary]];
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_commentLabel]|" options:kNilOptions metrics:nil views:viewDictionary]];
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_commentView]|" options:kNilOptions metrics:nil views:viewDictionary]];
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_numberOfLikesLabel]|" options:kNilOptions metrics:nil views:viewDictionary]];
         
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_mediaImageView][_usernameAndCaptionLabel][_commentLabel][_commentView(==100)][_numberOfLikesLabel]"
                                                                                  options:kNilOptions
@@ -217,7 +218,11 @@ static NSParagraphStyle *paragraphStyle;
     self.commentLabel.attributedText = [self commentString];
     self.likeButton.likeButtonState = mediaItem.likeState;
     self.commentView.text = mediaItem.temporaryComment;
-    self.numberOfLikesLabel.attributedText = [self numberOfLikesLabel];
+    self.numberOfLikesLabel.text = [self numberOfLikesString];
+}
+
+- (NSString *)numberOfLikesString {
+    return self.mediaItem.numberOfLikes;
 }
 
 + (CGFloat)heightForMediaItem:(Media *)mediaItem width:(CGFloat)width {
@@ -274,7 +279,7 @@ static NSParagraphStyle *paragraphStyle;
 }
 
 - (void)doubleFingerTapFired:(UITapGestureRecognizer *)sender {
-    [[DataSource sharedInstance] downloadImageForMediaItem:self.mediaImageView];
+    [[DataSource sharedInstance] downloadImageForMediaItem:self.mediaItem];
 }
 
 #pragma mark - ComposeCommentViewDelegate
