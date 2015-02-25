@@ -27,6 +27,8 @@
 @property (nonatomic, strong) CropBox *cropBox;
 @property (nonatomic, strong) CameraToolbar *cameraToolbar;
 
+@property (nonatomic, strong) UIImage *croppedImage;
+
 @end
 
 @implementation CameraViewController
@@ -89,7 +91,7 @@
 }
 
 - (void)addViewsToViewHierarchy {
-    NSMutableArray *views = [@[self.imagePreview, self.cropBox, self.topView, self.bottomView] mutableCopy];
+    NSMutableArray *views = [@[self.imagePreview, self.cropBox, self.topView, self.bottomView, self.croppedImage] mutableCopy];
     [views addObject:self.cameraToolbar];
     
     for (UIView *view in views) {
@@ -109,6 +111,7 @@
     self.topView.alpha = 0.5;
     self.bottomView.alpha = 0.5;
     self.cropBox = [CropBox new];
+    self.croppedImage = [UIImage new];
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -249,23 +252,3 @@
 */
 
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
