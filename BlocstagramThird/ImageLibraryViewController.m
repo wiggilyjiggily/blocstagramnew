@@ -86,6 +86,7 @@
                     [assets addObject:result];
                 }
             }];
+            [self.collectionView reloadData];
         }
     } failureBlock:^(NSError *error) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:error.localizedDescription message:error.localizedRecoverySuggestion delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK button") otherButtonTitles:nil];
